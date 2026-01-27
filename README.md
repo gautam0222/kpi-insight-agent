@@ -1,131 +1,275 @@
-# KPI Intelligence System
+# 🤖 KPI Insight Agent
 
-AI-powered KPI monitoring and analysis system for retail/ecommerce businesses.
+An **agentic KPI intelligence platform** that continuously monitors business metrics, detects anomalies, performs **causal analysis**, answers **natural-language data questions**, and generates **actionable business recommendations** — all in one unified system.
 
-## Features
+This project demonstrates how **LLM-powered agents** can be combined with classical analytics to build **decision‑ready intelligence systems** rather than simple dashboards.
 
-- **Talk-to-Data**: Ask questions in natural language
-- **KPI Monitoring**: Detect revenue changes and anomalies
-- **Causal Analysis**: Identify why KPIs changed
-- **Action Recommendations**: Get business-ready recommendations
+---
 
-## Setup
+## 🚀 What This Project Does
 
-1. **Install dependencies**:
+The KPI Insight Agent acts like a **virtual business analyst**:
+
+* 📊 **Monitors KPIs** (revenue, trends, alerts)
+* 🧠 **Explains why changes happened** using causal analysis
+* 💬 **Answers business questions** in natural language ("What was the avg revenue in last 30 days?")
+* 💡 **Recommends concrete actions** when issues are detected
+* 🤖 **Autonomous agent workflow** that ties everything together
+
+Instead of just showing numbers, it tells you:
+
+> *What changed, why it changed, and what to do next.*
+
+---
+
+## 🧠 Core Capabilities
+
+### 1️⃣ KPI Monitoring
+
+* Computes total revenue and average daily revenue
+* Tracks daily trends
+* Detects revenue drops and flags alerts automatically
+
+### 2️⃣ Talk to Your Data (Natural Language Queries)
+
+Ask questions like:
+
+* *What was the average revenue in the last 10 days?*
+* *Which category performed worst last week?*
+* *Show revenue trend for the last month*
+
+The system:
+
+* Converts questions into Pandas logic
+* Executes safely on the dataset
+* Returns **answer + explanation + generated code**
+
+### 3️⃣ Causal Analysis
+
+When KPIs change, the system:
+
+* Compares recent vs previous windows
+* Identifies **top contributing factors**
+* Quantifies impact per category
+* Explains *why* the KPI moved
+
+Example output:
+
+```json
+{
+  "kpi": "Overall Revenue",
+  "change_percent": -2.91,
+  "top_causes": [
+    {"factor": "Sports & Outdoors", "impact": -63800}
+  ]
+}
+```
+
+### 4️⃣ Actionable Recommendations
+
+Based on causal signals:
+
+* Generates prioritized actions
+* Explains reasoning
+* Estimates expected impact
+
+Example:
+
+```json
+{
+  "action": "Increase promotions for Beauty & Health",
+  "priority": "High"
+}
+```
+
+### 5️⃣ KPI Intelligence Agent
+
+A single agent endpoint that:
+
+1. Runs KPI monitoring
+2. Triggers causal analysis on deviations
+3. Generates recommendations
+4. Returns a unified intelligence report
+
+---
+
+## 🏗️ System Architecture
+
+```
+frontend (Next.js + shadcn/ui)
+   │
+   ▼
+backend (FastAPI)
+   │
+   ├── KPI Monitor
+   ├── Talk-to-Data Engine
+   ├── Causal Analyzer
+   ├── Recommendation Engine
+   └── Agent Orchestrator
+```
+
+---
+
+## 🧰 Tech Stack
+
+### Frontend
+
+* **Next.js (App Router)**
+* **TypeScript**
+* **shadcn/ui + Tailwind CSS**
+* **Recharts** (charts)
+* **Framer Motion** (animations)
+
+### Backend
+
+* **FastAPI**
+* **Pandas / NumPy**
+* **Pydantic**
+* **LLM integration (OpenAI‑style)**
+
+### Data
+
+* CSV‑based KPI dataset (easily replaceable with DB)
+
+---
+
+## 📁 Project Structure
+
+```
+kpi-insight-agent/
+│
+├── backend/
+│   ├── main.py
+│   ├── api/
+│   │   ├── monitor.py
+│   │   ├── ask.py
+│   │   ├── causal.py
+│   │   ├── recommend.py
+│   │   └── agent.py
+│   ├── kpi_intel/
+│   │   ├── core/
+│   │   ├── services/
+│   │   └── data/
+│
+├── frontend/
+│   ├── src/app/
+│   │   ├── page.tsx
+│   │   ├── dashboard/
+│   │   ├── chat/
+│   │   ├── causal/
+│   │   ├── recommendations/
+│   │   └── agent/
+│   ├── src/lib/api.ts
+│   └── src/components/ui/
+```
+
+---
+
+## ▶️ How to Run Locally
+
+### Backend
+
 ```bash
-python3 -m venv venv
-source venv/bin/activate
+cd backend
+python -m venv venv
+venv\Scripts\activate   # Windows
 pip install -r requirements.txt
+uvicorn main:app --reload
 ```
 
-2. **Configure API Key**:
-   - Get free API key from https://openrouter.ai/keys
-   - Edit `.env` file and add your key:
+Backend runs at:
+
 ```
-OPENROUTER_API_KEY=your_actual_key_here
+http://127.0.0.1:8000
 ```
 
-3. **Verify data**:
+Swagger UI:
+
+```
+http://127.0.0.1:8000/docs
+```
+
+---
+
+### Frontend
+
 ```bash
-ls data/kpi_data.csv
+cd frontend
+npm install
+npm run dev
 ```
 
-## Usage
+Frontend runs at:
 
-### 1. Talk-to-Data (Natural Language Queries)
-```bash
-python cli.py ask "What is the total revenue for the last 14 days?"
-python cli.py ask "Show revenue trend for Home & Kitchen category"
-python cli.py ask "Which products have the highest sales?"
-python cli.py ask "What is the average discount percentage?"
+```
+http://localhost:3000
 ```
 
-### 2. KPI Monitoring
-```bash
-# Monitor all KPIs
-python cli.py monitor
+Create `.env.local`:
 
-# Monitor specific date range
-python cli.py monitor --start-date 2025-01-01 --end-date 2025-01-15
-
-# Monitor specific category
-python cli.py monitor --category "Electronics"
-
-# Monitor specific product
-python cli.py monitor --product "iPhone"
+```env
+NEXT_PUBLIC_API_URL=http://127.0.0.1:8000
 ```
 
-### 3. Causal Analysis
-```bash
-# Explain recent KPI changes
-python cli.py explain
+---
 
-# Analyze last 14 days
-python cli.py explain --days 14
+## 🔌 API Endpoints
+
+| Method | Endpoint     | Description                 |
+| ------ | ------------ | --------------------------- |
+| POST   | `/monitor`   | KPI monitoring              |
+| POST   | `/ask`       | Natural language data Q&A   |
+| POST   | `/causal`    | Causal analysis             |
+| POST   | `/recommend` | Actionable recommendations  |
+| POST   | `/agent`     | Full KPI intelligence agent |
+
+---
+
+## 📊 Example Agent Output
+
+```json
+{
+  "summary": "Revenue deviation detected",
+  "monitor": {...},
+  "causal_analysis": {...},
+  "recommendations": [...]
+}
 ```
 
-### 4. Action Recommendations
-```bash
-# Get recommendations for recent changes
-python cli.py recommend
+---
 
-# Get recommendations for last 14 days
-python cli.py recommend --days 14
-```
+## 🎯 Why This Project Matters
 
-## Configuration
+This project goes beyond dashboards:
 
-Edit `.env` to adjust:
-- `ALERT_THRESHOLD`: Percentage change to trigger alerts (default: 15)
-- `ROLLING_WINDOW`: Days for baseline calculation (default: 7)
+* ❌ Not just charts
+* ❌ Not just SQL queries
+* ✅ **Autonomous decision intelligence**
 
-## Logs
+It demonstrates:
 
-System logs are saved to `logs/kpi_system.log`
+* Agentic workflows
+* Explainable analytics
+* Business‑ready AI systems
 
-## Example Workflow
-```bash
-# 1. Check for recent KPI changes
-python cli.py monitor
+Perfect for **AI Engineer / ML Engineer / Backend Engineer** portfolios.
 
-# 2. Analyze why changes occurred
-python cli.py explain
+---
 
-# 3. Get actionable recommendations
-python cli.py recommend
+## 🔮 Future Enhancements
 
-# 4. Ask specific questions
-python cli.py ask "What caused revenue to drop on 2025-01-15?"
-```
+* Database integration (PostgreSQL / BigQuery)
+* Streaming KPIs
+* Multi‑agent architecture
+* Role‑based access
+* Forecasting & scenario simulation
 
-## Dataset
+---
 
-- **File**: `data/kpi_data.csv`
-- **Records**: 500 products across 90 days
-- **KPIs**: Revenue, Discount, Marketing Spend, Supply Chain Efficiency, Ratings
+## 🧑‍💻 Author
 
-## Architecture
-```
-kpi_intel/
-├── cli.py                 # Main CLI interface
-├── app/
-│   ├── services/
-│   │   ├── talk_to_data.py   # NL query processing
-│   │   ├── monitor.py        # KPI change detection
-│   │   ├── causal.py         # Root cause analysis
-│   │   └── recommend.py      # Action recommendations
-│   └── core/
-│       ├── config.py         # Configuration
-│       ├── data_loader.py    # Data loading/filtering
-│       └── logger.py         # Logging setup
-└── data/
-    └── kpi_data.csv          # Dataset
-```
+Built with ❤️ as an end‑to‑end **AI + Analytics system**.
 
-## Troubleshooting
+---
 
-**No data loaded**: Ensure `data/kpi_data.csv` exists
-
-**API errors**: Verify OPENROUTER_API_KEY in `.env`
-
-**Import errors**: Activate venv and reinstall requirements
+⭐ If you found this useful, give the repo a star!

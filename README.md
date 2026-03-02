@@ -269,7 +269,7 @@ Perfect for **AI Engineer / ML Engineer / Backend Engineer** portfolios.
 ## 🧑‍💻 Author
 
 Built with ❤️ as an end‑to‑end **AI + Analytics system**.
-
+By Gautam
 ---
 
 ⭐ If you found this useful, give the repo a star!
